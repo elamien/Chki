@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="authors" content="[Your Names Here]">
+    <title>Account Settings - Chki</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Bootstrap CSS (optional) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Navigation Bar -->
+        <nav class="main-nav">
+            <div class="nav-section left">
+                <a href="index.html" class="logo">Chki</a>
+            </div>
+            <div class="nav-section middle">
+                <a href="index.html" class="nav-link">
+                    <i class="fas fa-home"></i> Home
+                </a>
+            </div>
+            <div class="nav-section right">
+                <a href="add-assignment.html" class="btn add-btn" aria-label="Add assignment">
+                    <i class="fas fa-plus"></i>
+                </a>
+                <a href="settings.html" class="btn user-btn active" aria-current="page" aria-label="Account settings">
+                    <i class="fas fa-user"></i>
+                </a>
+                <button id="toggleForum" class="btn forum-btn" aria-label="Toggle forum visibility">
+                    <i class="fas fa-comments"></i>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="content-area">
+            <div class="settings-container">
+                <h1>Account Settings</h1>
+
+                <div class="settings-section">
+                    <h2>Profile</h2>
+                    <div class="profile-info">
+                        <div class="profile-picture">
+                            <img src="https://via.placeholder.com/100" alt="Profile picture placeholder" class="avatar">
+                            <button class="btn change-photo-btn">Change Photo</button>
+                        </div>
+
+                        <form class="profile-form">
+                            <div class="form-group">
+                                <label for="displayName">Display Name</label>
+                                <input type="text" id="displayName" name="displayName"
+                                       value="Student User"
+                                       class="form-control">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="emailAddress">Email Address</label>
+                                <input type="email" id="emailAddress" name="emailAddress"
+                                       value="student@virginia.edu"
+                                       class="form-control">
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn save-btn">Save Profile</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h2>Notification Preferences</h2>
+                    <form class="notification-form">
+                        <div class="form-group">
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="emailNotifications" name="emailNotifications" checked>
+                                <label for="emailNotifications">Email notifications for upcoming deadlines</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="reminderTime">Default Reminder Time</label>
+                            <select id="reminderTime" name="reminderTime" class="form-control">
+                                <option value="1day">1 day before deadline</option>
+                                <option value="2days" selected>2 days before deadline</option>
+                                <option value="3days">3 days before deadline</option>
+                                <option value="1week">1 week before deadline</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="forumNotifications" name="forumNotifications" checked>
+                                <label for="forumNotifications">Notify me about new forum posts in my classes</label>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn save-btn">Save Notification Settings</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="settings-section">
+                    <h2>Integrations</h2>
+                    <div class="integrations-list">
+                        <div class="integration-item">
+                            <div class="integration-info">
+                                <div class="integration-icon">
+                                    <i class="fas fa-graduation-cap"></i>
+                                </div>
+                                <span class="integration-name">Canvas</span>
+                            </div>
+                            <button class="btn connect-btn">Connect</button>
+                        </div>
+
+                        <div class="integration-item">
+                            <div class="integration-info">
+                                <div class="integration-icon">
+                                    <i class="fas fa-clipboard-check"></i>
+                                </div>
+                                <span class="integration-name">Gradescope</span>
+                            </div>
+                            <button class="btn connect-btn">Connect</button>
+                        </div>
+
+                        <div class="integration-item">
+                            <div class="integration-info">
+                                <div class="integration-icon">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </div>
+                                <span class="integration-name">Google Calendar</span>
+                            </div>
+                            <button class="btn connected-btn">Connected</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h2>Display</h2>
+                    <form class="display-form">
+                        <div class="form-group">
+                            <label for="themeSelect">Theme</label>
+                            <select id="themeSelect" name="themeSelect" class="form-control">
+                                <option value="light" selected>Light</option>
+                                <option value="dark">Dark</option>
+                                <option value="system">Match System</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="defaultView">Default View</label>
+                            <select id="defaultView" name="defaultView" class="form-control">
+                                <option value="list" selected>List View</option>
+                                <option value="calendar">Calendar View</option>
+                                <option value="kanban">Kanban View</option>
+                            </select>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn save-btn">Save Display Settings</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="settings-section danger-zone">
+                    <h2>Account Actions</h2>
+                    <div class="account-actions">
+                        <button class="btn logout-btn">Log Out</button>
+                        <button class="btn delete-account-btn">Delete Account</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Forum Panel (Hidden by default) -->
+        <aside id="forumPanel" class="forum-panel">
+            <h2>Class Forums</h2>
+            <div class="forum-list">
+                <a href="forum.html" class="forum-item">
+                    <span class="course">CS4640</span>
+                    <span class="post-count">12 new posts</span>
+                </a>
+                <a href="forum.html" class="forum-item">
+                    <span class="course">CS4710</span>
+                    <span class="post-count">5 new posts</span>
+                </a>
+                <a href="forum.html" class="forum-item">
+                    <span class="course">CS4750</span>
+                    <span class="post-count">3 new posts</span>
+                </a>
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        // Simple toggle for forum panel
+        document.getElementById('toggleForum').addEventListener('click', function() {
+            const forumPanel = document.getElementById('forumPanel');
+            forumPanel.classList.toggle('active');
+        });
+
+        // Prevent form submission (just for mockup)
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('Settings saved! (This is just a mockup)');
+            });
+        });
+    </script>
+</body>
+</html>

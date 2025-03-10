@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="authors" content="Ahmed Elamin">
+    <!-- URL: https://cs4640.cs.virginia.edu/neh6vw/chki/ -->
+    <title>Chki - Smart Assignment Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Bootstrap CSS (optional) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Navigation Bar -->
+        <nav class="main-nav">
+            <div class="nav-section left">
+                <a href="index.html" class="logo">Chki</a>
+            </div>
+            <div class="nav-section middle">
+                <a href="index.html" class="nav-link active" aria-current="page">
+                    <i class="fas fa-home"></i> Home
+                </a>
+            </div>
+            <div class="nav-section right">
+                <a href="add-assignment.html" class="btn add-btn" aria-label="Add assignment">
+                    <i class="fas fa-plus"></i>
+                </a>
+                <a href="settings.html" class="btn user-btn" aria-label="Account settings">
+                    <i class="fas fa-user"></i>
+                </a>
+                <button id="toggleForum" class="btn forum-btn" aria-label="Toggle forum visibility">
+                    <i class="fas fa-comments"></i>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="content-area">
+            <div class="assignments-container">
+                <h1>Upcoming Assignments</h1>
+
+                <!-- Assignment Cards -->
+                <div class="assignment-card urgent">
+                    <div class="card-header">
+                        <div class="header-content">
+                            <h2 class="assignment-title">Web Development Sprint 2</h2>
+                            <p class="assignment-description">Create HTML and CSS mockups for your project proposal. Include at least 4 screens and 10 CSS rules.</p>
+                            <div class="course-tag">CS4640</div>
+                        </div>
+                        <span class="due-date">Due: February 24, 2025</span>
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn menu-btn" aria-label="More options">
+                            <i class="fas fa-ellipsis-v"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="assignment-card warning">
+                    <div class="card-header">
+                        <div class="header-content">
+                            <h2 class="assignment-title">Artificial Intelligence Homework 3</h2>
+                            <p class="assignment-description">Implement a minimax algorithm with alpha-beta pruning for the game of checkers.</p>
+                            <div class="course-tag">CS4710</div>
+                        </div>
+                        <span class="due-date">Due: February 28, 2025</span>
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn menu-btn" aria-label="More options">
+                            <i class="fas fa-ellipsis-v"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="assignment-card normal blue">
+                    <div class="card-header">
+                        <div class="header-content">
+                            <h2 class="assignment-title">Database Systems Midterm Project</h2>
+                            <p class="assignment-description">Design and implement a normalized database for a university registration system.</p>
+                            <div class="course-tag">CS4750</div>
+                        </div>
+                        <span class="due-date">Due: March 10, 2025</span>
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn menu-btn" aria-label="More options">
+                            <i class="fas fa-ellipsis-v"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="assignment-card normal blue">
+                    <div class="card-header">
+                        <div class="header-content">
+                            <h2 class="assignment-title">Operating Systems Project 1</h2>
+                            <p class="assignment-description">Implement a simple shell in C that supports basic commands and piping.</p>
+                            <div class="course-tag">CS4414</div>
+                        </div>
+                        <span class="due-date">Due: March 15, 2025</span>
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn menu-btn" aria-label="More options">
+                            <i class="fas fa-ellipsis-v"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Forum Panel (Hidden by default) -->
+        <aside id="forumPanel" class="forum-panel">
+            <h2>Class Forums</h2>
+            <div class="forum-list">
+                <a href="forum.html" class="forum-item">
+                    <span class="course">CS4640</span>
+                    <span class="post-count">12 new posts</span>
+                </a>
+                <a href="forum.html" class="forum-item">
+                    <span class="course">CS4710</span>
+                    <span class="post-count">5 new posts</span>
+                </a>
+                <a href="forum.html" class="forum-item">
+                    <span class="course">CS4750</span>
+                    <span class="post-count">3 new posts</span>
+                </a>
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        // Simple toggle for forum panel
+        document.getElementById('toggleForum').addEventListener('click', function() {
+            const forumPanel = document.getElementById('forumPanel');
+            forumPanel.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

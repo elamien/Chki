@@ -1,0 +1,811 @@
+/*
+ * Chki - Assignment Tracker Styles
+ * Authors: [Your Names Here]
+ */
+
+/*
+ * BASE STYLES
+ */
+:root {
+    --primary-color: #2c6bed;
+    --primary-hover: #1a5ad0;
+    --secondary-color: #f8f9fa;
+    --text-color: #333;
+    --light-text: #666;
+    --danger-color: #dc3545;
+    --warning-color: #ffc107;
+    --success-color: #28a745;
+    --border-color: #dee2e6;
+    --card-bg: #fff;
+    --hover-bg: #f0f4f8;
+    --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    --border-radius: 8px;
+    --transition-speed: 0.3s;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--text-color);
+    background-color: var(--secondary-color);
+    line-height: 1.5;
+}
+
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color var(--transition-speed);
+}
+
+a:hover {
+    color: var(--primary-hover);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+/*
+ * LAYOUT
+ */
+.app-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    min-height: 100vh;
+    position: relative;
+}
+
+/* Add forum panel when active */
+.app-container.show-forum {
+    grid-template-columns: 1fr 300px;
+}
+
+.main-nav {
+    background-color: var(--card-bg);
+    padding: 0.75rem 1rem;
+    box-shadow: var(--shadow);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.nav-section {
+    display: flex;
+    align-items: center;
+}
+
+.nav-section.middle {
+    flex-grow: 1;
+    justify-content: center;
+}
+
+.nav-section.right {
+    justify-content: flex-end;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    padding: 0 1rem;
+}
+
+.nav-link {
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+    color: var(--text-color);
+    transition: background-color var(--transition-speed);
+}
+
+.nav-link:hover, .nav-link.active {
+    background-color: var(--hover-bg);
+    color: var(--primary-color);
+}
+
+.btn {
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: all var(--transition-speed);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    border: none;
+    background-color: transparent;
+    color: var(--text-color);
+}
+
+/* Button hover effect */
+.btn:hover {
+    background-color: var(--hover-bg);
+}
+
+.add-btn, .user-btn, .forum-btn {
+    margin-left: 0.5rem;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border-radius: 50%;
+}
+
+.add-btn.active, .user-btn.active, .forum-btn.active {
+    background-color: var(--hover-bg);
+    color: var(--primary-color);
+}
+
+.content-area {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/*
+ * FORUM PANEL
+ */
+.forum-panel {
+    background-color: var(--card-bg);
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.05);
+    height: 100vh;
+    position: fixed;
+    right: -300px;
+    top: 0;
+    width: 300px;
+    padding: 1rem;
+    padding-top: 4rem;
+    transition: right var(--transition-speed);
+    z-index: 90;
+    overflow-y: auto;
+}
+
+.forum-panel.active {
+    right: 0;
+}
+
+.forum-list {
+    margin-top: 1rem;
+}
+
+.forum-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    border-radius: var(--border-radius);
+    background-color: var(--secondary-color);
+    transition: background-color var(--transition-speed);
+}
+
+.forum-item:hover {
+    background-color: var(--hover-bg);
+}
+
+.course {
+    font-weight: 600;
+}
+
+.post-count {
+    font-size: 0.8rem;
+    color: var(--light-text);
+}
+
+/*
+ * HOME PAGE - ASSIGNMENT CARDS
+ */
+.assignments-container {
+    margin-top: 1rem;
+}
+
+.assignment-card {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: stretch;
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 1rem;
+    overflow: hidden;
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+    border-left: 6px solid transparent;
+    position: relative;
+}
+
+/* Card hover effect */
+.assignment-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Card priority indicators */
+.assignment-card.urgent {
+    border-left-color: #e53935;
+}
+
+.assignment-card.warning {
+    border-left-color: #ffc107;
+}
+
+.assignment-card.normal.blue {
+    border-left-color: #2c6bed;
+}
+
+.card-header {
+    flex: 1;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 10px;
+}
+
+.header-content {
+    margin-bottom: 1rem;
+}
+
+.assignment-title {
+    font-size: 1.2rem;
+    margin: 0 0 0.5rem 0;
+    font-weight: 600;
+}
+
+.assignment-description {
+    margin-bottom: 0.75rem;
+    color: var(--light-text);
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+.due-date {
+    font-size: 0.95rem;
+    color: var(--light-text);
+}
+
+.course-tag {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    background-color: #4075e6;
+    color: white;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.card-actions {
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
+}
+
+.menu-btn {
+    color: #888;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.menu-btn:hover {
+    background-color: var(--hover-bg);
+    color: var(--text-color);
+}
+
+/*
+ * ADD ASSIGNMENT PAGE
+ */
+.form-container {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.assignment-form {
+    margin-top: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.form-row .form-group {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    transition: border-color var(--transition-speed);
+}
+
+/* Form input focus effect */
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(44, 107, 237, 0.2);
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+}
+
+.checkbox-container input[type="checkbox"] {
+    margin-right: 0.5rem;
+}
+
+.priority-selector {
+    display: flex;
+    gap: 1rem;
+}
+
+.priority-selector input[type="radio"] {
+    display: none;
+}
+
+.priority-label {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: all var(--transition-speed);
+}
+
+/* Priority label hover effect */
+.priority-label:hover {
+    background-color: var(--hover-bg);
+}
+
+.priority-label.low {
+    color: var(--success-color);
+}
+
+.priority-label.medium {
+    color: var(--warning-color);
+}
+
+.priority-label.high {
+    color: var(--danger-color);
+}
+
+input[type="radio"]:checked + .priority-label {
+    background-color: var(--hover-bg);
+    border-color: currentColor;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.cancel-btn {
+    background-color: var(--secondary-color);
+}
+
+.save-btn {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.save-btn:hover {
+    background-color: var(--primary-hover);
+}
+
+/*
+ * SETTINGS PAGE
+ */
+.settings-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.settings-section {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.profile-info {
+    display: flex;
+    gap: 2rem;
+    margin-top: 1rem;
+}
+
+.profile-picture {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.change-photo-btn {
+    font-size: 0.9rem;
+    padding: 0.25rem 0.5rem;
+}
+
+.profile-form {
+    flex-grow: 1;
+}
+
+.integrations-list {
+    margin-top: 1rem;
+}
+
+.integration-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+    gap: 1rem;
+}
+
+.integration-item:last-child {
+    border-bottom: none;
+}
+
+.integration-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+    overflow: hidden;
+}
+
+.integration-name {
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.integration-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #f0f4f8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.connect-btn {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.connected-btn {
+    background-color: var(--success-color);
+    color: white;
+}
+
+.danger-zone {
+    border-left: 4px solid var(--danger-color);
+}
+
+.account-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.logout-btn {
+    background-color: var(--secondary-color);
+}
+
+.delete-account-btn {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+/*
+ * FORUM PAGE
+ */
+.forum-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.forum-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.forum-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.forum-filter {
+    padding: 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+}
+
+.new-post-btn {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.new-post-form {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.new-post-form.hidden {
+    display: none;
+}
+
+.post-card {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+}
+
+.post-header {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.post-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--light-text);
+}
+
+.user-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.user-avatar.small {
+    width: 25px;
+    height: 25px;
+}
+
+.post-course-tag {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+}
+
+.post-title {
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+.post-content {
+    padding: 1rem;
+}
+
+.post-content p {
+    margin-bottom: 1rem;
+}
+
+.post-content ul {
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.post-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.tag {
+    background-color: var(--secondary-color);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    color: var(--light-text);
+}
+
+.post-footer {
+    border-top: 1px solid var(--border-color);
+    padding: 0.75rem 1rem;
+}
+
+.post-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.upvote-btn, .comment-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--light-text);
+}
+
+.post-comments {
+    background-color: var(--secondary-color);
+    padding: 1rem;
+    border-top: 1px solid var(--border-color);
+    display: none;
+}
+
+.post-comments.visible {
+    display: block;
+}
+
+.comment {
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+}
+
+.comment:last-of-type {
+    border-bottom: none;
+    margin-bottom: 0.5rem;
+}
+
+.comment-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--light-text);
+}
+
+.comment-form {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.comment-input {
+    flex-grow: 1;
+    padding: 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+}
+
+.comment-submit-btn {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0.5rem;
+}
+
+/*
+ * RESPONSIVE DESIGN
+ */
+@media (max-width: 768px) {
+    .content-area {
+        padding: 1rem;
+    }
+
+    .form-row {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .profile-info {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .forum-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .forum-actions {
+        width: 100%;
+    }
+
+    .forum-filter {
+        flex-grow: 1;
+    }
+}
+
+@media (max-width: 480px) {
+    .nav-section.middle {
+        display: none;
+    }
+
+    .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .assignment-title {
+        font-size: 1.1rem;
+    }
+
+    .priority-selector {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .priority-label {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion) {
+    * {
+        transition: none !important;
+        animation: none !important;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: more) {
+    :root {
+        --primary-color: #0056b3;
+        --border-color: #000;
+        --text-color: #000;
+        --light-text: #333;
+    }
+
+    .card-body {
+        border: 1px solid var(--border-color);
+    }
+}

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="authors" content="[Your Names Here]">
+    <title>Add Assignment - Chki</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Navigation Bar -->
+        <nav class="main-nav">
+            <div class="nav-section left">
+                <a href="index.html" class="logo">Chki</a>
+            </div>
+            <div class="nav-section middle">
+                <a href="index.html" class="nav-link">
+                    <i class="fas fa-home"></i> Home
+                </a>
+            </div>
+            <div class="nav-section right">
+                <a href="add-assignment.html" class="btn add-btn active" aria-current="page" aria-label="Add assignment">
+                    <i class="fas fa-plus"></i>
+                </a>
+                <a href="settings.html" class="btn user-btn" aria-label="Account settings">
+                    <i class="fas fa-user"></i>
+                </a>
+                <button id="toggleForum" class="btn forum-btn" aria-label="Toggle forum visibility">
+                    <i class="fas fa-comments"></i>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="content-area">
+            <div class="form-container">
+                <h1>Add New Assignment</h1>
+
+                <form id="assignmentForm" class="assignment-form">
+                    <div class="form-group">
+                        <label for="assignmentTitle">Assignment Title *</label>
+                        <input type="text" id="assignmentTitle" name="assignmentTitle"
+                               placeholder="Type assignment title here"
+                               required
+                               autocomplete="off"
+                               class="form-control"
+                               aria-required="true">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="dueDate">Due Date *</label>
+                            <input type="date" id="dueDate" name="dueDate"
+                                   required
+                                   class="form-control"
+                                   aria-required="true">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="dueTime">Due Time</label>
+                            <input type="time" id="dueTime" name="dueTime"
+                                   class="form-control"
+                                   value="23:59">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="courseSelect">Course *</label>
+                        <select id="courseSelect" name="courseSelect"
+                                required
+                                class="form-control"
+                                aria-required="true">
+                            <option value="" disabled selected>Select a course</option>
+                            <option value="CS4640">CS4640 - Web Development</option>
+                            <option value="CS4710">CS4710 - Artificial Intelligence</option>
+                            <option value="CS4750">CS4750 - Database Systems</option>
+                            <option value="CS4414">CS4414 - Operating Systems</option>
+                            <option value="add">+ Add New Course</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="assignmentDescription">Description / Notes</label>
+                        <textarea id="assignmentDescription"
+                                  name="assignmentDescription"
+                                  placeholder="Add any details, requirements, or notes about this assignment"
+                                  class="form-control"
+                                  rows="4"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="priorityLevel">Priority Level</label>
+                        <div class="priority-selector">
+                            <input type="radio" id="priorityLow" name="priorityLevel" value="low">
+                            <label for="priorityLow" class="priority-label low">Low</label>
+
+                            <input type="radio" id="priorityMedium" name="priorityLevel" value="medium" checked>
+                            <label for="priorityMedium" class="priority-label medium">Medium</label>
+
+                            <input type="radio" id="priorityHigh" name="priorityLevel" value="high">
+                            <label for="priorityHigh" class="priority-label high">High</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="checkbox-container">
+                            <input type="checkbox" id="emailReminder" name="emailReminder" checked>
+                            <label for="emailReminder">Send me email reminders</label>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn cancel-btn" onclick="window.location.href='index.html'">Cancel</button>
+                        <button type="submit" class="btn save-btn">Save Assignment</button>
+                    </div>
+                </form>
+            </div>
+        </main>
+
+        <!-- Forum Panel (Hidden by default) -->
+        <aside id="forumPanel" class="forum-panel">
+            <h2>Class Forums</h2>
+            <div class="forum-list">
+                <a href="forum.html" class="forum-item">
+                    <span class="course">CS4640</span>
+                    <span class="post-count">12 new posts</span>
+                </a>
+                <a href="forum.html" class="forum-item">
+                    <span class="course">CS4710</span>
+                    <span class="post-count">5 new posts</span>
+                </a>
+                <a href="forum.html" class="forum-item">
+                    <span class="course">CS4750</span>
+                    <span class="post-count">3 new posts</span>
+                </a>
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        // Simple toggle for forum panel
+        document.getElementById('toggleForum').addEventListener('click', function() {
+            const forumPanel = document.getElementById('forumPanel');
+            forumPanel.classList.toggle('active');
+        });
+
+        // Form submission handling (just prevent default for now)
+        document.getElementById('assignmentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Would normally handle form submission here
+            alert('Assignment saved! (This is just a mockup)');
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>
