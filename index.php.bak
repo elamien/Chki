@@ -1,0 +1,244 @@
+<?php
+require_once 'db_connect.php';
+session_start();
+
+// Check if user is logged in
+if (!isset($_SESSION['user_id'])) {
+    // Check for remember me cookie
+    if (isset($_COOKIE['remember_user'])) {
+        $userId = $_COOKIE['remember_user'];
+        $pdo = getDbConnection();
+        
+        if ($pdo) {
+            try {
+                $stmt = $pdo->prepare("SELECT * FROM users WHERE user_id = ?");
+                $stmt->execute([$userId]);
+                $user = $stmt->fetch();
+                
+                if ($user) {
+                    $_SESSION['user_id'] = $user['user_id'];
+                    $_SESSION['username'] = $user['username'];
+                    $_SESSION['display_name'] = $user['display_name'];
+                }
+            } catch (PDOException $e) {
+                // Silently fail and redirect to login
+            }
+        }
+    }
+    
+    // If still not logged in, redirect to login page
+    if (!isset($_SESSION['user_id'])) {
+        header("Location: login.php");
+        exit();
+    }
+}
+
+// Get the user's assignments
+$assignments = array();
+$pdo = getDbConnection();
+
+if ($pdo) {
+    try {
+        $stmt = $pdo->prepare("
+            SELECT * FROM assignments 
+            WHERE user_id = ? 
+            ORDER BY due_date ASC
+        ");
+        $stmt->execute([$_SESSION['user_id']]);
+        $assignments = $stmt->fetchAll();
+    } catch (PDOException $e) {
+        // Log the error
+        error_log("Error retrieving assignments: " . $e->getMessage());
+    }
+}
+
+// Function to determine assignment card class based on due date and priority
+function getAssignmentClass($dueDate, $priority) {
+    $today = time();
+    $dueTimestamp = strtotime($dueDate);
+    $daysDiff = ceil(($dueTimestamp - $today) / (60 * 60 * 24));
+    
+    if ($daysDiff <= 1) {
+        return 'urgent';
+    } elseif ($daysDiff <= 3 || $priority === 'high') {
+        return 'warning';
+    } else {
+        return 'normal blue';
+    }
+}
+
+// Check for flash messages
+$flashMessage = $_SESSION['flash_message'] ?? null;
+$flashType = $_SESSION['flash_type'] ?? 'info';
+
+// Clear flash message after displaying
+unset($_SESSION['flash_message']);
+unset($_SESSION['flash_type']);
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="authors" content="Ahmed Elamin">
+    <!-- URL: https://cs4640.cs.virginia.edu/neh6vw/chki/ -->
+    <title>Chki - Smart Assignment Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Navigation Bar -->
+        <nav class="main-nav">
+            <div class="nav-section left">
+                <a href="index.php" class="logo">Chki</a>
+            </div>
+            <div class="nav-section middle">
+                <a href="index.php" class="nav-link active" aria-current="page">
+                    <i class="fas fa-home"></i> Home
+                </a>
+            </div>
+            <div class="nav-section right">
+                <a href="add-assignment.php" class="btn add-btn" aria-label="Add assignment">
+                    <i class="fas fa-plus"></i>
+                </a>
+                <a href="settings.html" class="btn user-btn" aria-label="Account settings">
+                    <i class="fas fa-user"></i>
+                </a>
+                <button id="toggleForum" class="btn forum-btn" aria-label="Toggle forum visibility">
+                    <i class="fas fa-comments"></i>
+                </button>
+                <a href="logout.php" class="btn logout-btn" aria-label="Log out">
+                    <i class="fas fa-sign-out-alt"></i>
+                </a>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="content-area">
+            <div class="assignments-container">
+                <h1>Upcoming Assignments</h1>
+                <div class="welcome-message">
+                    Welcome, <?php echo htmlspecialchars($_SESSION['display_name'] ?: $_SESSION['username']); ?>!
+                </div>
+                
+                <?php if ($flashMessage): ?>
+                    <div class="alert alert-<?php echo htmlspecialchars($flashType); ?> alert-dismissible fade show" role="alert">
+                        <?php echo htmlspecialchars($flashMessage); ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <?php endif; ?>
+                
+                <!-- Assignment Filters -->
+                <div class="assignment-filters">
+                    <div class="filter-group">
+                        <label for="courseFilter">Filter by Course:</label>
+                        <select id="courseFilter" class="form-select">
+                            <option value="">All Courses</option>
+                            <?php
+                            $courses = array();
+                            if ($pdo) {
+                                try {
+                                    $stmt = $pdo->prepare("
+                                        SELECT DISTINCT course FROM assignments 
+                                        WHERE user_id = ?
+                                        ORDER BY course
+                                    ");
+                                    $stmt->execute([$_SESSION['user_id']]);
+                                    
+                                    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                        echo '<option value="' . htmlspecialchars($row['course']) . '">' . 
+                                             htmlspecialchars($row['course']) . '</option>';
+                                    }
+                                } catch (PDOException $e) {
+                                    // Silently continue
+                                }
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="priorityFilter">Filter by Priority:</label>
+                        <select id="priorityFilter" class="form-select">
+                            <option value="">All Priorities</option>
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Assignment Cards -->
+                <?php if (empty($assignments)): ?>
+                    <div class="no-assignments">
+                        <p>You don't have any assignments yet.</p>
+                        <a href="add-assignment.php" class="btn primary-btn">Add Your First Assignment</a>
+                    </div>
+                <?php else: ?>
+                    <?php foreach ($assignments as $assignment): ?>
+                        <div class="assignment-card <?php echo getAssignmentClass($assignment['due_date'], $assignment['priority']); ?>">
+                            <div class="card-header">
+                                <div class="header-content">
+                                    <h2 class="assignment-title"><?php echo htmlspecialchars($assignment['title']); ?></h2>
+                                    <p class="assignment-description"><?php echo htmlspecialchars($assignment['description']); ?></p>
+                                    <div class="course-tag"><?php echo htmlspecialchars($assignment['course']); ?></div>
+                                </div>
+                                <span class="due-date">Due: <?php echo date('F j, Y', strtotime($assignment['due_date'])); ?></span>
+                            </div>
+                            <div class="card-actions">
+                                <div class="dropdown">
+                                    <button class="btn menu-btn" type="button" id="dropdownMenuButton<?php echo $assignment['assignment_id']; ?>" 
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton<?php echo $assignment['assignment_id']; ?>">
+                                        <li><a class="dropdown-item" href="edit-assignment.php?id=<?php echo $assignment['assignment_id']; ?>">Edit</a></li>
+                                        <li>
+                                            <button class="dropdown-item delete-btn" data-id="<?php echo $assignment['assignment_id']; ?>">Delete</button>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#">Mark as Complete</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </div>
+        </main>
+
+        <!-- Forum Panel (Hidden by default) -->
+        <aside id="forumPanel" class="forum-panel">
+            <h2>Class Forums</h2>
+            <div class="forum-list">
+                <a href="forum.html" class="forum-item">
+                    <span class="course">CS4640</span>
+                    <span class="post-count">12 new posts</span>
+                </a>
+                <a href="forum.html" class="forum-item">
+                    <span class="course">CS4710</span>
+                    <span class="post-count">5 new posts</span>
+                </a>
+                <a href="forum.html" class="forum-item">
+                    <span class="course">CS4750</span>
+                    <span class="post-count">3 new posts</span>
+                </a>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="js/assignments.js"></script>
+    <script>
+        // Simple toggle for forum panel
+        document.getElementById('toggleForum').addEventListener('click', function() {
+            const forumPanel = document.getElementById('forumPanel');
+            forumPanel.classList.toggle('active');
+        });
+    </script>
+</body>
+</html> 

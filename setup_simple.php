@@ -1,0 +1,1 @@
+<?php $host = "db"; $port = "5432"; $dbname = "example"; $username = "localuser"; $password = "cs4640LocalUser!"; $conn = pg_connect("host=$host port=$port dbname=$dbname user=$username password=$password"); if ($conn) { echo "Connected successfully"; } else { echo "Failed: " . pg_last_error(); } ?>
